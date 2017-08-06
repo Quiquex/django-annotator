@@ -1,6 +1,11 @@
 import uuid
+
+from django.contrib.auth import get_user_model
 from django.db import models
 
+def get_username_max_length():
+    user_model = get_user_model()
+    return user_model._meta.get_field('username').max_length
 
 class Annotation(models.Model):
     """
@@ -23,7 +28,7 @@ class Annotation(models.Model):
     text = models.TextField()
     quote = models.TextField()
     uri = models.CharField(max_length=4096, blank=True)
-    user = models.CharField(max_length=128, blank=True)
+    user = models.CharField(max_length=get_username_max_length(), blank=True)
     consumer = models.CharField(max_length=64, blank=True)
 
     class Meta:
